@@ -27,9 +27,15 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
+
+    // Add a dependency on our findbugs detectors
+    findbugs configurations.findbugsPlugins.dependencies
+    findbugsPlugins fileTree(include: ['*.jar'], dir: '../findbugs/build/libs')
 }
 
-task findbugs(type: FindBugs, dependsOn: [":app:assembleDebug"]) {
+task findbugs(type: FindBugs, dependsOn: [":app:assembleDebug", ":findbugs:assemble"]) {
+
+    pluginClasspath = project.configurations.findbugsPlugins
 
     classes = fileTree('build/intermediates/classes/debug/')
     source = fileTree('src/main/java')

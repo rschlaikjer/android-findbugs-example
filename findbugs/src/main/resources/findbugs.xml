@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindbugsPlugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultenabled="true"
+    pluginid="com.schlaikjer.bugplugins" provider="Ross Schlaikjer">
+    <Detector class="com.schlaikjer.bugplugins.CursorNotFinallyClosedDetector" reports="DB_CURSOR_NOT_FINALLY_CLOSED"
+        speed="slow" />
+</FindbugsPlugin>

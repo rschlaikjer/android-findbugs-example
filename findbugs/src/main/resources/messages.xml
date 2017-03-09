@@ -1,0 +1,12 @@
+<MessageCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <Plugin>
+        <ShortDescription>Set of custom FindBugs plugins</ShortDescription>
+    </Plugin>
+
+
+    <Detector class="com.schlaikjer.bugplugins.CursorNotFinallyClosedDetector">
+        <Details>Checks for cursors that are not closed in a finally block</Details>
+    </Detector>
+
+</MessageCollection>
