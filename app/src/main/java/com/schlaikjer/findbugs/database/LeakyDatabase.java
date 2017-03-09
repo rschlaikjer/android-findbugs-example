@@ -70,6 +70,18 @@ public class LeakyDatabase {
         return null;
     }
 
+    public void finallyTest() {
+        Cursor c = null;
+        System.out.println("Before");
+        try {
+            System.out.println("Try");
+        } finally {
+            System.out.println("Finally");
+            c.close();
+        }
+        System.out.println("After");
+    }
+
     public Dog getDog(String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
