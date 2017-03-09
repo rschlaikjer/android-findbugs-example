@@ -55,6 +55,12 @@ public class LeakyDatabaseHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_AGE = "age";
         public static final String COLUMN_BREED = "breed";
+
+        public static String[] getProjection() {
+            return new String[]{
+                    COLUMN_NAME, COLUMN_AGE, COLUMN_BREED
+            };
+        }
     }
 
 }
