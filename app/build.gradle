@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'findbugs'
 
 android {
     compileSdkVersion 25
@@ -26,4 +27,22 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
+}
+
+task findbugs(type: FindBugs, dependsOn: [":app:assembleDebug"]) {
+
+    classes = fileTree('build/intermediates/classes/debug/')
+    source = fileTree('src/main/java')
+    classpath = files()
+
+    effort = 'max'
+
+    excludeFilter = file("../config/findbugs/filter.xml")
+
+    reports {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
 }
