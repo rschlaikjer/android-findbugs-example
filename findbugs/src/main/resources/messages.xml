@@ -9,4 +9,60 @@
         <Details>Checks for cursors that are not closed in a finally block</Details>
     </Detector>
 
+    <BugCode abbrev="DB_CURSOR">Bugs relating to Android cursor management</BugCode>
+
+    <BugPattern type="DB_CURSOR_METHODS_CALLED_OUTSIDE_TRY">
+        <ShortDescription>Cursor methods other than .close() called outside try block</ShortDescription>
+        <LongDescription>Cursor methods other than .close() called outside try block</LongDescription>
+        <Details><![CDATA[For a leak free cursor experience, consider rewriting your query such that
+all cursor operations occur inside a try{} block, with the cursor closed in the finally{} statment
+of said block. E.g.,
+
+    Cursor c = db.query(...);
+
+    try {
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            Foo f = new Foo(
+                    c.getString(c.getColumnIndex(...)),
+                    c.getInt(c.getColumnIndex(...)),
+                    ...
+            );
+            return f;
+        }
+    } finally {
+        c.close();
+    }
+    return null;
+
+]]></Details>
+    </BugPattern>
+
+    <BugPattern type="DB_CURSOR_NOT_FINALLY_CLOSED">
+        <ShortDescription>finally block does not close cursor</ShortDescription>
+        <LongDescription>finally block does not close cursor</LongDescription>
+        <Details><![CDATA[For a leak free cursor experience, consider rewriting your query such that
+all cursor operations occur inside a try{} block, with the cursor closed in the finally{} statment
+of said block. E.g.,
+
+    Cursor c = db.query(...);
+
+    try {
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            Foo f = new Foo(
+                    c.getString(c.getColumnIndex(...)),
+                    c.getInt(c.getColumnIndex(...)),
+                    ...
+            );
+            return f;
+        }
+    } finally {
+        c.close();
+    }
+    return null;
+
+]]></Details>
+    </BugPattern>
+
 </MessageCollection>

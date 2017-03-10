@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindbugsPlugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultenabled="true"
     pluginid="com.schlaikjer.bugplugins" provider="Ross Schlaikjer">
-    <Detector class="com.schlaikjer.bugplugins.CursorNotFinallyClosedDetector" reports="DB_CURSOR_NOT_FINALLY_CLOSED"
+    <Detector class="com.schlaikjer.bugplugins.CursorNotFinallyClosedDetector"
+        reports="DB_CURSOR_NOT_FINALLY_CLOSED,https://github.com/findbugsproject/findbugs.git"
         speed="slow" />
+
+    <BugPattern abbrev="DB_CURSOR" category="CORRECTNESS"
+        type="DB_CURSOR_METHODS_CALLED_OUTSIDE_TRY" />
+
+    <BugPattern abbrev="DB_CURSOR" category="CORRECTNESS" type="DB_CURSOR_NOT_FINALLY_CLOSED" />
+
 </FindbugsPlugin>
