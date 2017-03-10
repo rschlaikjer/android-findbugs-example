@@ -63,12 +63,11 @@ public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
 
         String finallyReference = getMethodName() + blockIndex;
         if (!suspectFinallys.containsKey(finallyReference)) {
-            suspectFinallys.put(finallyReference, new FinallyInfo(
-                    getClassName(),
-                    getSourceFile(),
-                    getCode().getLineNumberTable().getSourceLine(getPC()),
-                    getPC()
-            ));
+            suspectFinallys.put(finallyReference, new FinallyInfo(new BugInstance(
+                    this,
+                    "DB_CURSOR_NOT_FINALLY_CLOSED",
+                    HIGH_PRIORITY
+            ).addClassAndMethod(this)));
         }
 
         // Not a method call, return
@@ -174,31 +173,7 @@ public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
                 continue;
             }
 
-            SourceLineAnnotation bugSLA = new SourceLineAnnotation(
-                    finallyInfo.sourceClass,
-                    finallyInfo.sourceFileName,
-                    finallyInfo.sourceLineNumber,
-                    finallyInfo.sourceLineNumber,
-                    finallyInfo.bytecodeOffset,
-                    finallyInfo.bytecodeOffset
-            );
-
-            bugAccumulator.accumulateBug(
-                    new BugInstance(
-                            this,
-                            "DB_CURSOR_NOT_FINALLY_CLOSED",
-                            HIGH_PRIORITY
-                    ).addClass(getClassDescriptor()).addSourceLine(bugSLA),
-                    bugSLA
-            );
-
-            // Otherwise, accumulate a bug
-            System.out.println(String.format(
-                    Locale.ENGLISH,
-                    "Finally doesn't close cursor at %s line %d",
-                    finallyInfo.sourceFileName,
-                    finallyInfo.sourceLineNumber
-            ));
+            bugAccumulator.accumulateBug(finallyInfo.bugInstance, finallyInfo.bugInstance.getPrimarySourceLineAnnotation());
         }
 
         bugAccumulator.reportAccumulatedBugs();
@@ -206,17 +181,11 @@ public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
 
     private static class FinallyInfo {
         boolean callsCursorClose;
-        int sourceLineNumber;
-        int bytecodeOffset;
-        String sourceClass;
-        String sourceFileName;
+        BugInstance bugInstance;
 
-        public FinallyInfo(String sourceClass, String sourceFileName, int sourceLineNumber, int bytecodeOffset) {
+        public FinallyInfo(BugInstance instance) {
             this.callsCursorClose = false;
-            this.sourceClass = sourceClass;
-            this.sourceFileName = sourceFileName;
-            this.sourceLineNumber = sourceLineNumber;
-            this.bytecodeOffset = bytecodeOffset;
+            this.bugInstance = instance;
         }
     }
 
