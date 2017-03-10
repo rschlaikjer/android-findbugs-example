@@ -18,6 +18,7 @@
 all cursor operations occur inside a try{} block, with the cursor closed in the finally{} statment
 of said block. E.g.,
 
+<pre>
     Cursor c = db.query(...);
 
     try {
@@ -34,7 +35,8 @@ of said block. E.g.,
         c.close();
     }
     return null;
-
+</pre>
+</p>
 ]]></Details>
     </BugPattern>
 
