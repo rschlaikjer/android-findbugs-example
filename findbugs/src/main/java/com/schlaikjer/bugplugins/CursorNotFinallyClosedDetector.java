@@ -6,14 +6,12 @@ import org.apache.bcel.classfile.LocalVariableTable;
 import org.apache.bcel.classfile.Method;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import edu.umd.cs.findbugs.BugAccumulator;
 import edu.umd.cs.findbugs.BugInstance;
 import edu.umd.cs.findbugs.BugReporter;
 import edu.umd.cs.findbugs.BytecodeScanningDetector;
-import edu.umd.cs.findbugs.SourceLineAnnotation;
 
 public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
 
@@ -36,10 +34,6 @@ public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
         super.visitMethod(method);
         LocalVariableTable localVariableTable = method.getLocalVariableTable();
         examineMethod = variableTableContainsType(localVariableTable, ANDROID_CURSOR);
-        System.out.println("Examine method " + method.getName() + " ? " + examineMethod);
-        if (examineMethod) {
-            // System.out.println(getMethod().getCode());
-        }
     }
 
     @Override
@@ -48,7 +42,6 @@ public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
         if (!examineMethod) {
             return;
         }
-        // printOpCode(seen);
 
         checkIfCursorMethodsCalledOutsideTry(seen);
         checkExceptionHandlersCloseCursors(seen);
