@@ -70,11 +70,42 @@ public class LeakyDatabase {
         return null;
     }
 
+    public Dog getDogLeaky2(String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor c = db.query(
+                LeakyDatabaseHelper.DogsTable.TABLE_NAME,
+                LeakyDatabaseHelper.DogsTable.getProjection(),
+                LeakyDatabaseHelper.DogsTable.COLUMN_NAME + " = ?", // Select
+                new String[]{name}, // Selection args
+                null, // No group by
+                null, // No order by
+                null // No having
+        );
+
+        try {
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                Dog dog = new Dog(
+                        c.getString(c.getColumnIndex(LeakyDatabaseHelper.DogsTable.COLUMN_NAME)),
+                        c.getInt(c.getColumnIndex(LeakyDatabaseHelper.DogsTable.COLUMN_AGE)),
+                        c.getString(c.getColumnIndex(LeakyDatabaseHelper.DogsTable.COLUMN_BREED))
+                );
+                c.close();
+                return dog;
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
     public void finallyTest() {
         Cursor c = null;
         System.out.println("Before");
         try {
             System.out.println("Try");
+        } catch (RuntimeException ignored) {
+            System.out.println("Except");
         } finally {
             System.out.println("Finally");
             c.close();
