@@ -33,6 +33,11 @@ dependencies {
     findbugsPlugins fileTree(include: ['*.jar'], dir: '../findbugs/build/libs')
 }
 
+findbugs {
+    sourceSets = []
+    ignoreFailures = true
+}
+
 task findbugs(type: FindBugs, dependsOn: [":app:assembleDebug", ":findbugs:assemble"]) {
 
     pluginClasspath = project.configurations.findbugsPlugins
@@ -47,8 +52,8 @@ task findbugs(type: FindBugs, dependsOn: [":app:assembleDebug", ":findbugs:assem
 
     reports {
         reports {
-            xml.enabled = false
-            html.enabled = true
+            xml.enabled = true
+            html.enabled = false
         }
     }
 }
