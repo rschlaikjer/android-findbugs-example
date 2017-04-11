@@ -33,7 +33,7 @@ public class CursorNotFinallyClosedDetector extends BytecodeScanningDetector {
     public void visitMethod(Method method) {
         super.visitMethod(method);
         LocalVariableTable localVariableTable = method.getLocalVariableTable();
-        examineMethod = variableTableContainsType(localVariableTable, ANDROID_CURSOR);
+        examineMethod = localVariableTable != null && variableTableContainsType(localVariableTable, ANDROID_CURSOR);
     }
 
     @Override
